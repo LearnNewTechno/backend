@@ -26,26 +26,15 @@ pipeline {
                 sh 'npm install'
             }
         }
-        stage('Build') {
+        stage('Docker Build') {
             steps {
-                sh 'echo this is build'  
-                // sh 'sleep 10'
+                sh """
+                    docker build -t saanvilikhith/backend:${appVersion} .
+                    docker images
+                """ 
             }
         }
-        stage('Test') {
-            steps {
-                sh 'echo this is Test1'  
-                sh 'env'
-            }
-        }
-        stage('Deploy') {
-            when {
-                expression {env.GIT_BRANCH == 'origin/main'}
-            }
-            steps {
-                sh 'echo this is Deploy' 
-            }
-        }
+        
     }
     post {
         always {
